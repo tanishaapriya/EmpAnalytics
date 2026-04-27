@@ -1,0 +1,1 @@
+Finalizing the bridge between React snippet logic and Vanilla JS project structure.

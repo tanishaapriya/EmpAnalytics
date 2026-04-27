@@ -1,0 +1,1 @@
+Verifying Three.js shader logic compatibility with the project structure.

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmpAnalytics | Tactical HR Intelligence</title>
+    <!-- Cinematic Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <style>
+        /* Essential Overrides for the Cinematic Landing */
+        body {
+            overflow-x: hidden;
+            background: #000;
+        }
+        #threeCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+        .main-scroller {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="threeCanvas"></canvas>
+
+    <nav class="navbar" id="navbar" style="z-index: 100;">
+        <div class="nav-logo">
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+            <span class="logo-text">EmpAnalytics</span>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link"><span><b>Protocol</b><b>Protocol</b></span></a>
+            <a href="#" class="nav-link"><span><b>Defense</b><b>Defense</b></span></a>
+            <a href="#" class="nav-link"><span><b>Discover</b><b>Discover</b></span></a>
+        </div>
+
+        <div class="nav-actions">
+            <a href="login.html" class="btn-login">Login</a>
+            <a href="login.html" class="btn-signup">Access Center</a>
+        </div>
+    </nav>
+
+    <main class="main-scroller">
+        <!-- Section 1: HORIZON -->
+        <section class="cinematic-section active" id="section-1">
+            <div class="content-panel">
+                <span class="tag">System Initialize</span>
+                <h1 class="hero-title">EmpAnalytics <br> Protocol v1.0</h1>
+                <p class="hero-desc">Tactical HR Intelligence for mission-critical operations. <br>The future of workforce optimization, decoded.</p>
+                <div class="cta-row">
+                    <a href="login.html" class="cta-primary">Initialize Access</a>
+                    <div class="scroll-hint"><span>Scroll to Dive</span> <div class="mouse"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: PREDICTIVE -->
+        <section class="cinematic-section" id="section-2">
+            <div class="content-panel">
+                <span class="tag">Analytics Engine</span>
+                <h1 class="hero-title">Predictive <br> Retention</h1>
+                <p class="hero-desc">Identify attrition risks before they manifest. <br>Our deep-learning models track the pulse of your human capital.</p>
+                <div class="metric-row">
+                    <div class="metric"><span>82%</span> <p>Accuracy</p></div>
+                    <div class="metric"><span>12M</span> <p>Data Points</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: COMMAND -->
+        <section class="cinematic-section" id="section-3">
+            <div class="content-panel">
+                <span class="tag">Strategic Scale</span>
+                <h1 class="hero-title">Tactical <br> Command</h1>
+                <p class="hero-desc">Scale your organization with surgical precision. <br>Unified metrics for the modern executive.</p>
+                <a href="login.html" class="cta-primary" style="margin-top: 32px;">Access Command Center</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Cinematic Engine -->
+    <script src="js/landing.js"></script>
+</body>
+</html>

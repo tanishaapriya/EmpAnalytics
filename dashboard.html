@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | EmpAnalytics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="assets/logo.png" alt="EmpAnalytics Logo">
+                </div>
+                <span class="logo-text">Emp Analytics</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="employees.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Employees</span>
+                </a>
+                <a href="tasks.html" class="nav-link">
+                    <i class="fas fa-check-square"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="performance.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Performance</span>
+                </a>
+                <a href="attrition.html" class="nav-link">
+                    <i class="fas fa-user-minus"></i>
+                    <span>Attrition</span>
+                </a>
+                <a href="index.html" class="nav-link" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; color: #ff4444;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="user-card">
+                    <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">HA</div>
+                    <div>
+                        <p style="font-weight: 600; font-size: 0.85rem;">HR Admin</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);">Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <header class="topbar">
+                <div class="top-left">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-bars mobile-toggle" id="mobileToggle" style="display: none; cursor: pointer; font-size: 1.25rem;"></i>
+                        <div>
+                            <h2>Executive Dashboard</h2>
+                            <p>Analytics Overview for Q2 2026</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-right">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-right: 15px; background: rgba(255, 107, 0, 0.05); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255, 107, 0, 0.2);">
+                        <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; letter-spacing: 1px;">LIVE INTEL</span>
+                        <label class="switch" style="position: relative; display: inline-block; width: 34px; height: 18px;">
+                            <input type="checkbox" id="liveFeedToggle" style="opacity: 0; width: 0; height: 0;">
+                            <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #27272a; transition: .4s; border-radius: 18px;"></span>
+                        </label>
+                    </div>
+                    <div class="icon-btn">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="icon-btn">
+                        <i class="far fa-bell"></i>
+                        <span class="badge-dot"></span>
+                    </div>
+                    <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--border); overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=HR+Admin&background=random" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- Stat Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card fade-up" style="animation-delay: 0.1s;">
+                        <div class="accent-bar" style="background: var(--primary);"></div>
+                        <div class="stat-icon" style="background: rgba(37, 99, 235, 0.1); color: var(--primary);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value" id="count-employees">248</div>
+                        <div class="stat-label">Total Employees</div>
+                        <div class="trend-chip" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="fas fa-arrow-up" style="margin-right: 4px;"></i> +12 this month
+                        </div>
+                    </div>
+
+                    <div class="stat-card fade-up" style="animation-delay: 0.2s;">
+                        <div class="accent-bar" style="background: var(--success);"></div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-value" id="count-tasks">134</div>
+                        <div class="stat-label">Active Tasks</div>
+                        <div class="trend-chip" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="fas fa-check" style="margin-right: 4px;"></i> 89% on track
+                        </div>
+                    </div>
+
+                    <div class="stat-card fade-up" style="animation-delay: 0.3s;">
+                        <div class="accent-bar" style="background: var(--warning);"></div>
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value" id="count-perf">76.4%</div>
+                        <div class="stat-label">Avg Performance</div>
+                        <div class="trend-chip" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="fas fa-arrow-up" style="margin-right: 4px;"></i> +3.2% vs Q1
+                        </div>
+                    </div>
+
+                    <div class="stat-card fade-up" style="animation-delay: 0.4s;">
+                        <div class="accent-bar" style="background: var(--danger);"></div>
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-value" id="count-attr">18</div>
+                        <div class="stat-label">Attrition Risk</div>
+                        <div class="trend-chip" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                             Needs attention
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="card fade-up" style="animation-delay: 0.5s;">
+                        <div class="card-header">
+                            <h3>Performance Trend</h3>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Monthly scores by department</div>
+                        </div>
+                        <div style="height: 300px;">
+                            <canvas id="performanceTrendChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card fade-up" style="animation-delay: 0.6s;">
+                        <div class="card-header">
+                            <h3>Department Workload</h3>
+                        </div>
+                        <div style="height: 300px;">
+                            <canvas id="workloadChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row -->
+                <div class="bottom-row">
+                    <div class="card fade-up" style="animation-delay: 0.7s;">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <i class="fas fa-ellipsis-h" style="color: var(--text-muted); cursor: pointer;"></i>
+                        </div>
+                        <div class="activity-list" id="activity-f-list">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <div class="card fade-up" style="animation-delay: 0.8s;">
+                        <div class="card-header">
+                            <h3>Top Performers</h3>
+                            <a href="performance.html" style="text-decoration: none; color: var(--primary); font-weight: 600; cursor: pointer; font-size: 0.85rem;">View All</a>
+                        </div>
+                        <div class="performers-list" id="top-performer-render-list" style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Overlay Backdrop -->
+    <div id="overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 950;"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

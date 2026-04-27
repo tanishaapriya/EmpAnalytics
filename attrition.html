@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attrition Risk | EmpAnalytics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="assets/logo.png" alt="EmpAnalytics Logo">
+                </div>
+                <span class="logo-text">Emp Analytics</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="employees.html" class="nav-link"><i class="fas fa-users"></i><span>Employees</span></a>
+                <a href="tasks.html" class="nav-link"><i class="fas fa-check-square"></i><span>Tasks</span></a>
+                <a href="performance.html" class="nav-link"><i class="fas fa-chart-bar"></i><span>Performance</span></a>
+                <a href="attrition.html" class="nav-link active"><i class="fas fa-user-minus"></i><span>Attrition</span></a>
+                <a href="index.html" class="nav-link" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; color: #ff4444;"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="user-card">
+                    <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">HA</div>
+                    <div>
+                        <p style="font-weight: 600; font-size: 0.85rem;">HR Admin</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);">Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <header class="topbar">
+                <div class="top-left">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-bars mobile-toggle" id="mobileToggle" style="display: none; cursor: pointer; font-size: 1.25rem;"></i>
+                        <div>
+                            <h2>Attrition Risk</h2>
+                            <p>AI-powered retention insights</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-right">
+                    <div class="icon-btn"><i class="fas fa-search"></i></div>
+                    <div class="icon-btn"><i class="far fa-bell"></i><span class="badge-dot"></span></div>
+                    <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--border); overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=HR+Admin&background=random" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- Risk Summary Banner -->
+                <div class="risk-banner fade-up" id="riskBanner" style="animation-delay: 0.1s;">
+                    <span id="risk-banner-text"><i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i> Calculating workforce risks...</span>
+                    <i class="fas fa-times dismiss-btn" onclick="document.getElementById('riskBanner').style.display='none'"></i>
+                </div>
+
+                <!-- Risk Overview Cards -->
+                <div class="stats-grid fade-up" style="animation-delay: 0.2s;">
+                    <div class="stat-card">
+                        <div class="accent-bar" style="background: var(--danger);"></div>
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <div id="stat-high-risk" class="stat-value">0</div>
+                        <div class="stat-label">High Risk</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="accent-bar" style="background: var(--warning);"></div>
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div id="stat-medium-risk" class="stat-value">0</div>
+                        <div class="stat-label">Medium Risk</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="accent-bar" style="background: var(--success);"></div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div id="stat-low-risk" class="stat-value">0</div>
+                        <div class="stat-label">Low Risk</div>
+                    </div>
+                </div>
+
+                <!-- Risk Factors Chart -->
+                <div class="card fade-up" style="margin-top: 2rem; animation-delay: 0.3s;">
+                    <div class="card-header">
+                        <h3>Top Attrition Drivers</h3>
+                    </div>
+                    <div style="height: 350px;">
+                        <canvas id="driversChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Employee Risk Table -->
+                <div class="card fade-up" style="margin-top: 2rem; animation-delay: 0.4s;">
+                    <div class="card-header">
+                        <h3>Employee Risk Assessment</h3>
+                    </div>
+                    <table class="dept-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Tenure</th>
+                                <th>Salary</th>
+                                <th>Performance</th>
+                                <th>Risk Score</th>
+                                <th>Risk Level</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="riskTableBody" class="staggered">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- AI Recommendations -->
+                <div style="margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1rem;"><i class="far fa-lightbulb" style="color: var(--warning); margin-right: 8px;"></i> AI Recommendations</h3>
+                    <div class="recommendations-panel fade-up" style="animation-delay: 0.5s;">
+                        <div class="insight-card accent-danger">
+                            <p style="font-weight: 700; margin-bottom: 8px;">Salary Benchmarking</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Salary benchmarking needed for 6 Engineering employees currently below market average.</p>
+                        </div>
+                        <div class="insight-card accent-warning">
+                            <p style="font-weight: 700; margin-bottom: 8px;">Engagement Sessions</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Schedule 1-on-1s with Sales team — 3 employees show disengagement signals in surveys.</p>
+                        </div>
+                        <div class="insight-card">
+                            <p style="font-weight: 700; margin-bottom: 8px;">Growth Planning</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Growth path plans missing for 11 employees under 2-year tenure. High flight risk detected.</p>
+                        </div>
+                        <div class="insight-card accent-success">
+                            <p style="font-weight: 700; margin-bottom: 8px;">Workload Balance</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Workload redistribution recommended for 4 overloaded employees to prevent burnout.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div id="overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 950;"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/attrition.js"></script>
+</body>
+</html>

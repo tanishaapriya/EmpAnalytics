@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks | EmpAnalytics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="assets/logo.png" alt="EmpAnalytics Logo">
+                </div>
+                <span class="logo-text">Emp Analytics</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="employees.html" class="nav-link"><i class="fas fa-users"></i><span>Employees</span></a>
+                <a href="tasks.html" class="nav-link active"><i class="fas fa-check-square"></i><span>Tasks</span></a>
+                <a href="performance.html" class="nav-link"><i class="fas fa-chart-bar"></i><span>Performance</span></a>
+                <a href="attrition.html" class="nav-link"><i class="fas fa-user-minus"></i><span>Attrition</span></a>
+                <a href="index.html" class="nav-link" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; color: #ff4444;"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="user-card">
+                    <div class="user-avatar" style="width: 40px; height: 40px; border-radius: 8px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">HA</div>
+                    <div>
+                        <p style="font-weight: 600; font-size: 0.85rem;">HR Admin</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);">Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <header class="topbar">
+                <div class="top-left">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-bars mobile-toggle" id="mobileToggle" style="display: none; cursor: pointer; font-size: 1.25rem;"></i>
+                        <div>
+                            <h2>Tasks</h2>
+                            <p>Track and assign workload</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-right">
+                    <div class="icon-btn"><i class="fas fa-search"></i></div>
+                    <div class="icon-btn"><i class="far fa-bell"></i><span class="badge-dot"></span></div>
+                    <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--border); overflow: hidden;">
+                        <img src="https://ui-avatars.com/api/?name=HR+Admin&background=random" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- Summary Strip -->
+                <div class="summary-strip fade-up" style="animation-delay: 0.1s;">
+                    <div class="summary-chip">
+                        <i class="fas fa-clipboard-list" style="color: var(--primary);"></i>
+                        <div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Total Tasks</p>
+                            <p id="stat-total" style="font-weight: 700; font-size: 1.1rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-chip">
+                        <i class="fas fa-hourglass-half" style="color: var(--warning);"></i>
+                        <div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Pending</p>
+                            <p id="stat-pending" style="font-weight: 700; font-size: 1.1rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-chip">
+                        <i class="fas fa-sync" style="color: var(--primary);"></i>
+                        <div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">In Progress</p>
+                            <p id="stat-in-progress" style="font-weight: 700; font-size: 1.1rem;">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-chip">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Completed</p>
+                            <p id="stat-completed" style="font-weight: 700; font-size: 1.1rem;">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="task-toolbar fade-up" style="animation-delay: 0.2s;">
+                    <div class="toolbar-filters">
+                        <div class="filter-group">
+                            <i class="fas fa-search" style="color: var(--text-muted); font-size: 0.8rem;"></i>
+                            <input type="text" placeholder="Search tasks or assignees...">
+                        </div>
+                        <div class="filter-group">
+                            <i class="fas fa-filter" style="color: var(--text-muted); font-size: 0.8rem;"></i>
+                            <select>
+                                <option>Status: All</option>
+                                <option>Pending</option>
+                                <option>In Progress</option>
+                                <option>Completed</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select>
+                                <option>Priority: All</option>
+                                <option>High</option>
+                                <option>Medium</option>
+                                <option>Low</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select>
+                                <option>Department: All</option>
+                                <option>Engineering</option>
+                                <option>Product</option>
+                                <option>Sales</option>
+                                <option>HR</option>
+                                <option>Marketing</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">
+                        <i class="fas fa-plus"></i> New Task
+                    </button>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="kanban-board">
+                    <!-- Column 1: Pending -->
+                    <div class="kanban-column fade-up" style="animation-delay: 0.3s;">
+                        <div class="column-header">
+                            <h3 style="color: var(--warning);"><i class="fas fa-circle"></i> PENDING</h3>
+                            <span class="column-count">5</span>
+                        </div>
+                        <div class="task-cards staggered" id="pendingTasks">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <!-- Column 2: In Progress -->
+                    <div class="kanban-column fade-up" style="animation-delay: 0.4s;">
+                        <div class="column-header">
+                            <h3 style="color: var(--primary);"><i class="fas fa-play-circle"></i> IN PROGRESS</h3>
+                            <span class="column-count">5</span>
+                        </div>
+                        <div class="task-cards staggered" id="inProgressTasks">
+                             <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Completed -->
+                    <div class="kanban-column fade-up" style="animation-delay: 0.5s;">
+                        <div class="column-header">
+                            <h3 style="color: var(--success);"><i class="fas fa-check-circle"></i> COMPLETED</h3>
+                            <span class="column-count">5</span>
+                        </div>
+                        <div class="task-cards staggered" id="completedTasks">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div id="overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 950;"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/tasks.js"></script>
+</body>
+</html>

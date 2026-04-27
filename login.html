@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | EmpAnalytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/config.js"></script>
+    <style>
+        :root {
+            --bg: #000000;
+            --surface: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --primary: #ffffff;
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hero Canvas */
+        #dotCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .gradient-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at center, black 0%, transparent 70%),
+                linear-gradient(to bottom, black, transparent 33%);
+        }
+
+        /* Nav logo only for login */
+        .login-nav {
+            position: fixed;
+            top: 32px;
+            left: 32px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-logo {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .logo-dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        .logo-dot:nth-child(1) { top: 0; left: 7.5px; }
+        .logo-dot:nth-child(2) { bottom: 0; left: 7.5px; }
+        .logo-dot:nth-child(3) { left: 0; top: 7.5px; }
+        .logo-dot:nth-child(4) { right: 0; top: 7.5px; }
+
+        /* Form Steps */
+        /* Form Steps */
+        .form-container {
+            position: relative;
+            z-index: 10;
+            max-width: 384px;
+            width: 100%;
+            padding: 0 24px;
+            display: grid;
+            grid-template-areas: "stack";
+            place-items: center;
+        }
+
+        .step-panel {
+            grid-area: stack;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(80px);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-panel.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
+
+        .step-panel.exiting {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-80px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .subhead {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .subhead-small {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 32px;
+        }
+
+        /* Step 1 specifics */
+        .google-btn {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-bottom: 24px;
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            color: rgba(255,255,255,0.2);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
+        .input-main {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05); /* Added slight background for visibility */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Increased border contrast */
+            border-radius: 999px;
+            padding: 12px 52px 12px 16px;
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-main:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-main::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-submit-arrow {
+            position: absolute;
+            right: 6px;
+            top: 5px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-submit-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .arrow-stack {
+            display: flex;
+            flex-direction: row;
+            width: 72px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .btn-submit-arrow:hover .arrow-stack {
+            transform: translateX(-36px);
+        }
+
+        .legal-footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .legal-footer a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        /* Step 2 specifics */
+        .code-container {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .code-input-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .digit-field {
+            position: relative;
+            width: 32px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .digit-input {
+            width: 32px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            text-align: center;
+            font-size: 1.25rem;
+            outline: none;
+            font-weight: 600;
+            caret-color: transparent;
+            z-index: 2;
+        }
+
+        .digit-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.25rem;
+            font-weight: 600;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .digit-input:not(:placeholder-shown) + .digit-placeholder {
+            display: none;
+        }
+
+        .divider-v {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 4px;
+        }
+
+        .resend-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 32px;
+        }
+
+        .resend-text:hover {
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn-back {
+            width: 30%;
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-continue {
+            flex: 1;
+            background: #111;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: all 0.3s;
+        }
+
+        .btn-continue.ready {
+            background: #fff;
+            color: #000;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Step 3 specifics */
+        .check-circle {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .check-circle.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-dash {
+            width: 100%;
+            background: #fff;
+            color: #000;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-dash.show {
+            opacity: 1;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-4px); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="dotCanvas"></canvas>
+    <div class="gradient-overlay"></div>
+
+    <a href="index.html" class="login-nav">
+        <div class="nav-logo">
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+            <div class="logo-dot"></div>
+        </div>
+        <span style="font-weight: 600; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase;">EmpAnalytics</span>
+    </a>
+
+    <div class="form-container">
+        <!-- STEP 1 -->
+        <div class="step-panel active" id="step-email">
+            <h1>Mission Authentication</h1>
+            <p class="subhead">Tactical Access Port</p>
+            
+            <button class="google-btn">
+                <svg width="18" height="18" viewBox="0 0 18 18">
+                    <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.49h4.84c-.21 1.12-.84 2.07-1.78 2.7l2.87 2.22c1.68-1.55 2.64-3.83 2.64-6.57z"/>
+                    <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.87-2.22c-.8.54-1.82.85-3.09.85-2.37 0-4.38-1.6-5.1-3.75L.95 13.44C2.43 16.14 5.48 18 9 18z"/>
+                    <path fill="#FBBC05" d="M3.9 10.7c-.18-.54-.28-1.12-.28-1.7s.1-1.16.28-1.7L.95 4.84C.35 6.09 0 7.51 0 9s.35 2.91.95 4.16L3.9 10.7z"/>
+                    <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0 5.48 0 2.43 1.86.95 4.56L3.9 7.3c.72-2.15 2.73-3.72 5.1-3.72z"/>
+                </svg>
+                Identity Verification
+            </button>
+
+            <div class="divider">or</div>
+
+            <div class="input-wrapper">
+                <input type="email" class="input-main" id="emailInput" placeholder="operative@empanalytics.com">
+                <button class="btn-submit-arrow" id="submitEmail">
+                    <div class="arrow-stack">
+                        <div class="arrow-icon">→</div>
+                        <div class="arrow-icon">→</div>
+                    </div>
+                </button>
+            </div>
+
+            <p class="legal-footer">Protected by Entrust Quantum Encryption.</p>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" id="step-code">
+            <h1>Transmission Sent</h1>
+            <p class="subhead-small">Verify coordinates</p>
+
+            <div class="code-container">
+                <div class="code-input-group">
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                    <div class="divider-v"></div>
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                    <div class="digit-field"><input type="text" maxlength="1" class="digit-input" placeholder=" "><span class="digit-placeholder">0</span></div>
+                </div>
+            </div>
+
+            <p class="resend-text">Request new burst</p>
+
+            <div class="btn-row">
+                <button class="btn-back" id="backToEmail">Abort</button>
+                <button class="btn-continue" id="continueToSuccess">Finalize</button>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" id="step-success">
+            <h1>Clearance Granted</h1>
+            <p class="subhead-small" style="margin-bottom: 48px;">Welcome operative</p>
+
+            <div class="check-circle" id="checkCircle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #000;">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+
+            <a href="dashboard.html" class="btn-dash" id="finalBtn">Enter Command Center</a>
+        </div>
+    </div>
+
+    <script>
+        // --- CANVAS ANIMATION ---
+        const canvas = document.getElementById('dotCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, midX, midY, maxDist;
+        let dots = [];
+        let startTime = performance.now();
+        let animMode = 'intro';
+        let outroStartTime = 0;
+
+        const OPACITY_POOL = [0.08, 0.12, 0.18, 0.25, 0.35, 0.5, 0.65, 0.8, 0.9, 1.0];
+
+        class Dot {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.dist = Math.sqrt((x - midX)**2 + (y - midY)**2);
+                this.revealTime = this.dist * 0.015 + Math.random() * 1500;
+                this.targetOpacity = OPACITY_POOL[Math.floor(Math.random() * OPACITY_POOL.length)];
+                this.hideTime = 0;
+            }
+            draw(elapsed, mode) {
+                let opacity = 0;
+                if (mode === 'intro') {
+                    if (elapsed > this.revealTime) opacity = Math.min((elapsed - this.revealTime) / 800, 1) * this.targetOpacity;
+                } else {
+                    const oElapsed = elapsed - outroStartTime;
+                    if (oElapsed < this.hideTime) opacity = this.targetOpacity;
+                    else opacity = (1 - Math.min((oElapsed - this.hideTime) / 400, 1)) * this.targetOpacity;
+                }
+                if (opacity > 0) {
+                    ctx.beginPath();ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;ctx.fill();
+                }
+            }
+        }
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            midX = width / 2; midY = height / 2; maxDist = Math.sqrt(midX**2 + midY**2);
+            dots = [];
+            const spacing = 24;
+            for (let x = spacing/2; x < width; x += spacing) {
+                for (let y = spacing/2; y < height; y += spacing) {
+                    dots.push(new Dot(x, y));
+                }
+            }
+        }
+
+        function animate(time) {
+            ctx.clearRect(0, 0, width, height);
+            dots.forEach(dot => dot.draw(time - startTime, animMode));
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        requestAnimationFrame(animate);
+
+        function triggerOutro() {
+            animMode = 'outro'; 
+            outroStartTime = performance.now() - startTime;
+            dots.forEach(dot => dot.hideTime = (maxDist - dot.dist) * 0.02 + Math.random() * 200);
+        }
+
+        // --- STEP LOGIC ---
+        function showStep(stepId) {
+            const activePanel = document.querySelector('.step-panel.active');
+            if (!activePanel) return;
+
+            activePanel.classList.add('exiting');
+            activePanel.classList.remove('active');
+            
+            setTimeout(() => {
+                activePanel.classList.remove('exiting');
+                const next = document.getElementById(`step-${stepId}`);
+                if (next) {
+                    next.classList.add('active');
+                    
+                    // Autofocus first digit if moving to code step
+                    if (stepId === 'code') {
+                        setTimeout(() => digits[0].focus(), 100);
+                    }
+
+                    if (stepId === 'success') {
+                        document.getElementById('checkCircle').classList.add('show');
+                        setTimeout(() => document.getElementById('finalBtn').classList.add('show'), 800);
+                    }
+                }
+            }, 400);
+        }
+
+        // Step 1 Events
+        const emailInput = document.getElementById('emailInput');
+        const submitEmail = document.getElementById('submitEmail');
+        const googleBtn = document.querySelector('.google-btn');
+        const verifyBtn = document.getElementById('continueToSuccess');
+        const digits = document.querySelectorAll('.digit-input');
+        const codeInputs = digits; // Alias for compatibility
+        
+        const handleEmailSubmit = async () => {
+            const val = emailInput.value.trim();
+            if (val.includes('@')) {
+                try {
+                    const response = await fetch(`${API_BASE}/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: val })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        // Store the "token" or message if needed
+                        localStorage.setItem('userEmail', val);
+                        showStep('code');
+                    } else {
+                        throw new Error(data.error || 'Login failed');
+                    }
+                } catch (err) {
+                    showError(err.message);
+                    emailInput.style.borderColor = "#ff4444";
+                    emailInput.parentElement.style.animation = "shake 0.4s ease";
+                    setTimeout(() => {
+                        emailInput.style.borderColor = "";
+                        emailInput.parentElement.style.animation = "";
+                    }, 400);
+                }
+            } else {
+                showError("Please enter a valid email address.");
+                emailInput.style.borderColor = "#ff4444";
+                emailInput.parentElement.style.animation = "shake 0.4s ease";
+                setTimeout(() => {
+                    emailInput.style.borderColor = "";
+                    emailInput.parentElement.style.animation = "";
+                }, 400);
+            }
+        };
+
+        submitEmail.addEventListener('click', handleEmailSubmit);
+        function verifyCode() {
+            const codeArr = Array.from(digits).map(i => i.value).join('');
+            if (codeArr === "000000") {
+                finishAuth();
+            } else {
+                showError("Invalid tactical clearance code. Access Denied.");
+                digits.forEach(i => i.style.borderColor = "#ff4444");
+                setTimeout(() => digits.forEach(i => i.style.borderColor = ""), 1000);
+            }
+        }
+
+        verifyBtn.addEventListener('click', verifyCode);
+        googleBtn.addEventListener('click', () => {
+             // Mock Google login for this exercise using the admin email
+             emailInput.value = "admin@empanalytics.com";
+             handleEmailSubmit();
+        }); 
+        
+        emailInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleEmailSubmit();
+        });
+
+        // Step 2 Events: Digits
+        const continueBtn = verifyBtn;
+
+        digits.forEach((input, idx) => {
+            // Focus logic on click to find first empty
+            input.addEventListener('mousedown', () => {
+                const firstEmpty = Array.from(digits).find(i => !i.value);
+                if (firstEmpty && Array.from(digits).indexOf(firstEmpty) < idx) {
+                    setTimeout(() => firstEmpty.focus(), 10);
+                }
+            });
+
+            input.addEventListener('input', (e) => {
+                if (input.value && idx < digits.length - 1) {
+                    digits[idx+1].focus();
+                }
+                checkCodeComplete();
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && idx > 0) {
+                    digits[idx-1].focus();
+                }
+                if (e.key === 'Enter') {
+                    if (continueBtn.classList.contains('ready')) {
+                        finishAuth();
+                    } else {
+                        // Alert user they missed something
+                        const empty = Array.from(digits).find(i => !i.value);
+                        if (empty) {
+                            empty.focus();
+                            empty.parentElement.style.animation = "shake 0.4s ease";
+                            setTimeout(() => empty.parentElement.style.animation = "", 400);
+                        }
+                    }
+                }
+            });
+        });
+
+        function checkCodeComplete() {
+            const filled = Array.from(digits).every(i => i.value.length > 0);
+            if (filled) {
+                continueBtn.classList.add('ready');
+                continueBtn.disabled = false;
+                // Subtle pulse for the button to show it's ready
+                continueBtn.style.boxShadow = "0 0 20px rgba(255,255,255,0.4)";
+            } else {
+                continueBtn.classList.remove('ready');
+                continueBtn.disabled = true;
+                continueBtn.style.boxShadow = "none";
+            }
+        }
+
+        function finishAuth() {
+            triggerOutro(); 
+            setTimeout(() => showStep('success'), 1800);
+        }
+
+        continueBtn.addEventListener('click', () => {
+            if (continueBtn.classList.contains('ready')) {
+                verifyCode();
+            } else {
+                // Shake digits if not ready
+                digits.forEach(d => {
+                    if (!d.value) {
+                        d.parentElement.style.animation = "shake 0.4s ease";
+                        setTimeout(() => d.parentElement.style.animation = "", 400);
+                    }
+                });
+            }
+        });
+
+        document.getElementById('backToEmail').addEventListener('click', () => showStep('email'));
+
+        // Navbar Home Link (optional)
+        document.querySelector('.login-nav').addEventListener('click', (e) => {
+            // Standard link behavior
+        });
+    </script>
+</body>
+</html>
